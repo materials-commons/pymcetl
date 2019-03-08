@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+
+import sys
+from optparse import OptionParser
+from mcetl.app.AppHelper import AppHelper
+
+if __name__ == "__main__":
+    parser = OptionParser()
+    parser.add_option("-p", "--project", dest="project_id",
+                      help="project id", type="string")
+    parser.add_option("-e", "--experiment", dest="experiment_name",
+                      help="experiment name", type="string")
+    parser.add_option("-k", "--apikey", dest="apikey",
+                      help="apikey", type="string")
+    parser.add_option("-s", "--spreadsheet", dest="spreadsheet_path",
+                      help="spreadsheet", type="string")
+    (options, args) = parser.parse_args()
+
+    if options.project_id is None:
+        print("You must specify a project")
+        sys.exit(1)
+
+    if options.experiment_name is None:
+        print("You must specify an experiment name")
+        sys.exit(1)
+
+    if options.apikey is None:
+        print("You must specify the apikey")
+        sys.exit(1)
+
+    if options.spreadsheet_path is None:
+        print("You must specify the spreadsheet path")
+        sys.exit(1)
+
+    # try:
+    AppHelper(options.apikey).run_project_based_etl(options.project_id, options.spreadsheet_path,
+                                                    options.experiment_name, "")
+    # except BaseException as e:
+    #     message = "Failed process spreadsheet {}".format(e)
+    #     print(message)
+    #     sys.exit(1)
+
+    sys.exit(0)
